@@ -9,9 +9,8 @@
 
 #include "BB_8.hpp";
 
-// Pins for the different components on the robot.
+// Pins for the different components on the robot
 #define LIGHT_SENSOR_PIN A0
-
 #define PROX_SENSOR_L_PIN A1
 #define PROX_SENSOR_R_PIN A2
 #define PROX_SENSOR_FL_PIN A3
@@ -20,7 +19,6 @@
 #define PROX_SENSOR_RR_PIN 12
 #define PROX_SENSOR_DL_PIN 6
 #define PROX_SENSOR_DR_PIN 9
-
 #define MOTOR_RF_PIN 2
 #define MOTOR_RB_PIN 4
 #define MOTOR_R_SPEED 3
@@ -28,6 +26,10 @@
 #define MOTOR_LB_PIN 8
 #define MOTOR_L_SPEED 5
 
+
+
+//----------------------------------------------------------------------------------------------------
+//---------------------------------------VARIABLE DEFINITION------------------------------------------
 // Variables that will hold the value of the proximity sensors.
 int sensorL;
 int sensorR;
@@ -42,10 +44,10 @@ const int thresholdDiagonal = 600;
 const int thresholdSide = 400;
 
 // Variables for the speed of the robot.
-const int speed = 255;
+const int speed = 200;
 const int turnSpeed = speed - 100;
 
-// Variables for tile detection.
+// Variables for tile BB_8.detection.
 color last_color_detected = color::UNDEFINED;
 GroundType actual_ground;
 int tile_timer_threshold = 200; // Value may need to be adjusted depending on the computer.
@@ -71,12 +73,16 @@ unsigned long lapStartTime;
 enum RobotState{FOLLOW_WALL, GO_STRAIGHT};
 RobotState currentState = FOLLOW_WALL;
 
+//var
+Robot::Robot() {}
+Robot BB_8;
+
+//----------------------------------------------------------------------------------------------------
+//---------------------------------------HARDWARE SETUP-----------------------------------------------
 void hardware_setup() { // HoRoSim Function.
   new DCMotor_Hbridge(MOTOR_RF_PIN, MOTOR_RB_PIN, MOTOR_R_SPEED, "ePuck_rightJoint", 2.5, 3 * 3.14159, 1);
   new DCMotor_Hbridge(MOTOR_LF_PIN, MOTOR_LB_PIN, MOTOR_L_SPEED, "ePuck_leftJoint", 2.5, 3 * 3.14159, 1);
-
   new VisionSensor(LIGHT_SENSOR_PIN, "ePuck_lightSensor", 0.1);
-
   new ProximitySensor(PROX_SENSOR_FL_PIN, "ePuck_proxSensor3", 0.1, 1);
   new ProximitySensor(PROX_SENSOR_FR_PIN, "ePuck_proxSensor4", 0.1, 1);
   new ProximitySensor(PROX_SENSOR_L_PIN, "ePuck_proxSensor1", 0.1, 1);
@@ -87,6 +93,8 @@ void hardware_setup() { // HoRoSim Function.
   new ProximitySensor(PROX_SENSOR_DR_PIN, "ePuck_proxSensor5", 0.1, 1);
 }
 
+//----------------------------------------------------------------------------------------------------
+//---------------------------------------ARDUINO SETUP FUNCTION---------------------------------------
 void setup() {
   // Start communication between HoRoSim window and Arduino.
   Serial.begin(4800);
@@ -100,78 +108,95 @@ void setup() {
   pinMode(MOTOR_L_SPEED, OUTPUT);
 
   startMillis = millis(); // Initialize the start time.
-  lapStartTime = millis(); // Initialize the start time for the backToStart function.
+  lapStartTime = millis(); // Initialize the start time for the BB_8.backToStart function.
+}
+//----------------------------------------------------------------------------------------------------
+//---------------------------------------ARDUINO LOOP FUNCTION----------------------------------------
+void loop() {
+  BB_8.findBlackTile();
+  // BB_8.test();
 }
 
-void loop() {  
-  // Find the black tile in the maze and get back to start as fast as possible
-  findBlackTile();
-}
 
-void findBlackTile(){
+//----------------------------------------------------------------------------------------------------
+//---------------------------------------ROBOT METHOD DEFINITION--------------------------------------
+void Robot::test(){
+  // BB_8.followWallLeft();
+  // BB_8.tileDetection();
+  // printColor(BB_8.lightSensor());
+  BB_8.lightSensor();
+  delay(50);
+}
+bool a = false;
+
+void Robot::findBlackTile(){
   // The robot does a test lap.
-  if (testLap == true){
-    mapTime();
+  if (testLap) {
+    // if (!a) {
+    //   Serial.print("lap test");
+    //   a = true;
+    // }
+    BB_8.mapTime();
   }
-  else if (testLap == false) {
+  else if (!testLap) {
     if ((timeToBlack != 0) && (redcpt != 2)){ // Black tile has been found along the perimeter wall.
       if (lapTime-timeToBlack < timeToBlack){ // Time by following the right wall is shorter so we do this and then turn around.
-        tileDetection();
+        BB_8.tileDetection();
         if (blackcpt == 0){
-          followWallRight();
+          BB_8.followWallRight();
         }
         else if (blackcpt == 1){ // Black tile found / Turn around.
-          followWallLeft();
+          BB_8.followWallLeft();
         }
       }
       else { // The other path is shorter.
-        tileDetection();
+        BB_8.tileDetection();
         if (blackcpt == 0){ // We follow the left wall until we find the black tile.
-          followWallLeft(); 
+          BB_8.followWallLeft(); 
         }
         else if (blackcpt == 1){ // We turn around.
-          followWallRight();
+          BB_8.followWallRight();
         }
       }
     }
     
     else if (blackcpt != 1){ // The black tile has not been found along the perimeter wall. We randomly explore the maze.
-      tileDetection();
+      BB_8.tileDetection();
       if (turncpt >= 100){ // Reset the counter if it exceeds the randPath list bounds.
         turncpt = 0;
       }
-      exploreMazeRandom(); 
+      BB_8.exploreMazeRandom(); 
       redcpt = 1; // Red tile counter forced to one so that the robot can go back to start in the end.
     }
 
     // The robot is back at the start and stops.
     else if (redcpt == 2){
-      completeStop();
+      BB_8.completeStop();
     }
     
     // The black tile has been found (not along the perimeter wall). The robot looks for this wall and finds its way back to start.
     else { 
-      tileDetection();
-      backToStart();
+      BB_8.tileDetection();
+      BB_8.backToStart();
     }
   }
 }
 
-void backToStart(){ // Function which allows the robot to get back to start if random exploration occured.
+void Robot::backToStart(){ // Function which allows the robot to get back to start if random exploration occured.
   unsigned long currentTime = millis();
 
   switch (currentState){
     case FOLLOW_WALL:
-      followWallLeft();
+      BB_8.followWallLeft();
       if (currentTime - lapStartTime > lapTime + 5000){ // The robot followed the left wall longer than it takes to do a lap (+ tolerance) -> change wall and start again
         currentState = GO_STRAIGHT; 
         lapStartTime = currentTime;
       }
       break;
     case GO_STRAIGHT:
-      detection();
+      BB_8.detection();
       if (sensorFL > thresholdFront && sensorFR > thresholdFront){
-        forward(speed);
+        BB_8.forward(speed);
         if (currentTime - lapStartTime > 5000){ // Searched for a new wall for 5 seconds / start following it again
         currentState = FOLLOW_WALL;
         lapStartTime = currentTime;
@@ -185,9 +210,56 @@ void backToStart(){ // Function which allows the robot to get back to start if r
   }
 }
 
-void mapTime(){ // Function to measure the time needed by the robot to complete one lap around the robot.
-  tileDetection();
-  followWallLeft();
+
+void Robot::exploreMazeRandom(){ // Function used to explore the maze randomly
+  BB_8.detection();  
+  if ((sensorFL < thresholdFront) || (sensorFR < thresholdFront)){
+    // Something is detected somewhere in the path the robot.
+    // We choose a "random" direction for the robot to follow.
+    if (randPath[turncpt] == 1){ 
+      if (sensorL > thresholdSide){ // If there is no wall on this side we can turn.
+        BB_8.turnLeft(turnSpeed);
+        turncpt++;
+      }
+      else { // There is a wall on this side, we can't turn. We ignore the random decision and turn in the other direction.
+        BB_8.turnRight(turnSpeed);
+        turncpt++;
+      }
+    }
+    // Same as before except in the other direction.
+    else if (randPath[turncpt] == 0) {
+      if (sensorR > thresholdSide){
+        BB_8.turnRight(turnSpeed);
+        turncpt++;
+      }
+      else {
+        BB_8.turnLeft(turnSpeed);
+        turncpt++;
+      }
+    }
+  }
+
+  else if ((sensorFL > thresholdFront) && (sensorFR > thresholdFront)){ 
+    // Nothing is detected in front of the robot -> robot moves BB_8.forward
+    BB_8.forward(speed);
+  }
+
+  else if ((sensorFL < thresholdFront) && (sensorL < thresholdSide)){
+    // Something is detected to the left of the robot, we need to turn right
+    BB_8.turnRight(turnSpeed);
+    turncpt++;
+  }
+
+  else if ((sensorFR < thresholdFront) && (sensorR < thresholdSide)){
+    // Something is detected to the right of the robot, we need to turn left
+    BB_8.turnLeft(turnSpeed);
+    turncpt++;
+  }
+}
+
+void Robot::mapTime(){
+  BB_8.tileDetection();
+  BB_8.followWallLeft();
   
   // Time to black tile, if black tile is spotted along the perimeter wall
   if (blackcpt == 1 && timeblc == false){
@@ -210,55 +282,9 @@ void mapTime(){ // Function to measure the time needed by the robot to complete 
   }
 }
 
-void exploreMazeRandom(){ // Function used to explore the maze randomly
-  detection();
-  
-  if ((sensorFL < thresholdFront) || (sensorFR < thresholdFront)){
-    // Something is detected somewhere in the path the robot.
-    // We choose a "random" direction for the robot to follow.
-    if (randPath[turncpt] == 1){ 
-      if (sensorL > thresholdSide){ // If there is no wall on this side we can turn.
-        turnLeft(turnSpeed);
-        turncpt++;
-      }
-      else { // There is a wall on this side, we can't turn. We ignore the random decision and turn in the other direction.
-        turnRight(turnSpeed);
-        turncpt++;
-      }
-    }
-    // Same as before except in the other direction.
-    else if (randPath[turncpt] == 0) {
-      if (sensorR > thresholdSide){
-        turnRight(turnSpeed);
-        turncpt++;
-      }
-      else {
-        turnLeft(turnSpeed);
-        turncpt++;
-      }
-    }
-  }
 
-  else if ((sensorFL > thresholdFront) && (sensorFR > thresholdFront)){ 
-    // Nothing is detected in front of the robot -> robot moves forward
-    forward(speed);
-  }
-
-  else if ((sensorFL < thresholdFront) && (sensorL < thresholdSide)){
-    // Something is detected to the left of the robot, we need to turn right
-    turnRight(turnSpeed);
-    turncpt++;
-  }
-
-  else if ((sensorFR < thresholdFront) && (sensorR < thresholdSide)){
-    // Something is detected to the right of the robot, we need to turn left
-    turnLeft(turnSpeed);
-    turncpt++;
-  }
-}
-
-void tileDetection() { // Detect which colored tile the robot is on.
-  color color = lightSensor();
+void Robot::tileDetection() { // Detect which colored tile the robot is on.
+  color color = BB_8.lightSensor();
   if (color != color::UNDEFINED && color != last_color_detected) {
     last_color_detected = color;
     if (color == color::RED) {
@@ -287,8 +313,9 @@ void tileDetection() { // Detect which colored tile the robot is on.
   }
 }
 
-color lightSensor() { // Detect the color of the tile using the light sensor
+color Robot::lightSensor() { // Detect the color of the tile using the light sensor
   const int val = analogRead(LIGHT_SENSOR_PIN);
+  Serial.println(val);
   if ( 0<val && val<150 ){
     return color::BLACK;
   }
@@ -303,6 +330,84 @@ color lightSensor() { // Detect the color of the tile using the light sensor
   }
 }
 
+void Robot::followWallLeft(){ // Follow the left wall
+  BB_8.detection(); // Read all the proximity sensor values
+  if ((sensorFL > thresholdFront) && (sensorFR > thresholdFront)){ 
+      // Nothing is detected in front of the robot -> robot moves BB_8.forward
+      BB_8.forward(speed);
+  }
+  if ((sensorFL < thresholdFront) || (sensorFR < thresholdFront)){
+    // Something is detected somewhere in the path the robot -> turn right
+    BB_8.turnRight(turnSpeed);
+  }
+  if ((sensorFL > thresholdDiagonal) && (sensorL > thresholdSide) && (sensorDL > thresholdDiagonal)){
+    // If we lose sight of the left wall we turn left to find it again
+    BB_8.turnLeft(turnSpeed);
+  }
+}
+
+void Robot::followWallRight(){ // Follow the right wall
+  BB_8.detection(); // Read all the proximity sensor values
+  if ((sensorFL > thresholdFront) && (sensorFR > thresholdFront)){ 
+    // Nothing is detected in front of the robot -> robot moves BB_8.forward
+    BB_8.forward(speed);
+  }
+  if ((sensorFL < thresholdFront) || (sensorFR < thresholdFront)){
+    // Something is detected somewhere in the path the robot -> turn left
+    BB_8.turnLeft(turnSpeed);
+  }
+  if ((sensorFR > thresholdDiagonal) && (sensorR > thresholdSide) && (sensorDR > thresholdDiagonal)){
+    // If we lose sight of the right wall we turn right to find it again
+    BB_8.turnRight(turnSpeed);
+  }
+}
+
+void Robot::detection(){ // Read all the proximity sensor values and store them.
+  sensorL=analogRead(PROX_SENSOR_L_PIN);
+  sensorR=analogRead(PROX_SENSOR_R_PIN);
+  sensorFL=analogRead(PROX_SENSOR_FL_PIN);
+  sensorFR=analogRead(PROX_SENSOR_FR_PIN);
+  sensorDL=analogRead(PROX_SENSOR_DL_PIN);
+  sensorDR=analogRead(PROX_SENSOR_DR_PIN);
+}
+
+void Robot::forward(int speed){ // The robot moves BB_8.forwards
+  digitalWrite(MOTOR_RF_PIN, HIGH);
+  digitalWrite(MOTOR_RB_PIN, LOW);
+  digitalWrite(MOTOR_LF_PIN, HIGH);
+  digitalWrite(MOTOR_LB_PIN, LOW);
+
+  analogWrite(MOTOR_R_SPEED, speed);
+  analogWrite(MOTOR_L_SPEED, speed);
+}
+
+void Robot::turnLeft(int speed){ // The robot turns left
+  digitalWrite(MOTOR_RF_PIN, HIGH);
+  digitalWrite(MOTOR_RB_PIN, LOW);
+  digitalWrite(MOTOR_LF_PIN, LOW);
+  digitalWrite(MOTOR_LB_PIN, HIGH);
+
+  analogWrite(MOTOR_R_SPEED, speed);
+  analogWrite(MOTOR_L_SPEED, speed);
+}
+
+void Robot::turnRight(int speed){ // The robot turns right
+  digitalWrite(MOTOR_RF_PIN, LOW);
+  digitalWrite(MOTOR_RB_PIN, HIGH);
+  digitalWrite(MOTOR_LF_PIN, HIGH);
+  digitalWrite(MOTOR_LB_PIN, LOW);
+
+  analogWrite(MOTOR_R_SPEED, speed);
+  analogWrite(MOTOR_L_SPEED, speed);
+}
+
+void Robot::completeStop(){ // The robot comes to a complete stop
+  analogWrite(MOTOR_R_SPEED, 0);
+  analogWrite(MOTOR_L_SPEED, 0);
+}
+
+//----------------------------------------------------------------------------------------------------
+//---------------------------------------FUNCTION DEFINITION------------------------------------------
 void printColor(color c) { // Print the color of the tile
   switch (c) {
     case color::BLACK:
@@ -318,80 +423,4 @@ void printColor(color c) { // Print the color of the tile
       Serial.println("Undefined");
       break;
   }
-}
-
-void followWallLeft(){ // Follow the left wall
-  detection(); // Read all the proximity sensor values
-  if ((sensorFL > thresholdFront) && (sensorFR > thresholdFront)){ 
-      // Nothing is detected in front of the robot -> robot moves forward
-      forward(speed);
-  }
-  if ((sensorFL < thresholdFront) || (sensorFR < thresholdFront)){
-    // Something is detected somewhere in the path the robot -> turn right
-    turnRight(turnSpeed);
-  }
-  if ((sensorFL > thresholdDiagonal) && (sensorL > thresholdSide) && (sensorDL > thresholdDiagonal)){
-    // If we lose sight of the left wall we turn left to find it again
-    turnLeft(turnSpeed);
-  }
-}
-
-void followWallRight(){ // Follow the right wall
-  detection(); // Read all the proximity sensor values
-  if ((sensorFL > thresholdFront) && (sensorFR > thresholdFront)){ 
-    // Nothing is detected in front of the robot -> robot moves forward
-    forward(speed);
-  }
-  if ((sensorFL < thresholdFront) || (sensorFR < thresholdFront)){
-    // Something is detected somewhere in the path the robot -> turn left
-    turnLeft(turnSpeed);
-  }
-  if ((sensorFR > thresholdDiagonal) && (sensorR > thresholdSide) && (sensorDR > thresholdDiagonal)){
-    // If we lose sight of the right wall we turn right to find it again
-    turnRight(turnSpeed);
-  }
-}
-
-void detection(){ // Read all the proximity sensor values and store them.
-  sensorL=analogRead(PROX_SENSOR_L_PIN);
-  sensorR=analogRead(PROX_SENSOR_R_PIN);
-  sensorFL=analogRead(PROX_SENSOR_FL_PIN);
-  sensorFR=analogRead(PROX_SENSOR_FR_PIN);
-  sensorDL=analogRead(PROX_SENSOR_DL_PIN);
-  sensorDR=analogRead(PROX_SENSOR_DR_PIN);
-}
-
-void forward(int speed){ // The robot moves forwards
-  digitalWrite(MOTOR_RF_PIN, HIGH);
-  digitalWrite(MOTOR_RB_PIN, LOW);
-  digitalWrite(MOTOR_LF_PIN, HIGH);
-  digitalWrite(MOTOR_LB_PIN, LOW);
-
-  analogWrite(MOTOR_R_SPEED, speed);
-  analogWrite(MOTOR_L_SPEED, speed);
-}
-
-void turnLeft(int speed){ // The robot turns left
-  digitalWrite(MOTOR_RF_PIN, HIGH);
-  digitalWrite(MOTOR_RB_PIN, LOW);
-  digitalWrite(MOTOR_LF_PIN, LOW);
-  digitalWrite(MOTOR_LB_PIN, HIGH);
-
-  analogWrite(MOTOR_R_SPEED, speed);
-  analogWrite(MOTOR_L_SPEED, speed);
-}
-
-void turnRight(int speed){ // The robot turns right
-  digitalWrite(MOTOR_RF_PIN, LOW);
-  digitalWrite(MOTOR_RB_PIN, HIGH);
-  digitalWrite(MOTOR_LF_PIN, HIGH);
-  digitalWrite(MOTOR_LB_PIN, LOW);
-
-  analogWrite(MOTOR_R_SPEED, speed);
-  analogWrite(MOTOR_L_SPEED, speed);
-}
-
-void completeStop(){ // The robot comes to a complete stop
-  analogWrite(MOTOR_R_SPEED, 0);
-  analogWrite(MOTOR_L_SPEED, 0);
 }
