@@ -7,8 +7,7 @@
 ******************************************
 */
 
-#include "Robot.hpp";
-#include "Functions.hpp";
+#include "BB_8.hpp";
 
 // Pins for the different components on the robot.
 #define LIGHT_SENSOR_PIN A0
@@ -63,8 +62,8 @@ int turncpt = 0;
 unsigned long timeToBlack; // To get to the black tile.
 unsigned long lapTime;     // To complete one lap around the maze.
 unsigned long startMillis;
-bool timeblccpt = false; // If the robot has measured the time needed to get to the black tile.
-bool timeredcpt = false; // If the robot has measured the time needed to go from the red tile to the red tile after completing one lap around the maze.
+bool timeblc = false; // If the robot has measured the time needed to get to the black tile.
+bool timered = false; // If the robot has measured the time needed to go from the red tile to the red tile after completing one lap around the maze.
 bool testLap = true; // If the robot is measuring the maze.
 
 // Variable and Enum so the robot can find its way back to start after random exploration.
@@ -191,20 +190,20 @@ void mapTime(){ // Function to measure the time needed by the robot to complete 
   followWallLeft();
   
   // Time to black tile, if black tile is spotted along the perimeter wall
-  if (blackcpt == 1 && timeblccpt == false){
+  if (blackcpt == 1 && timeblc == false){
     timeToBlack = millis() - startMillis;
     Serial.print("Black tile time: ");
     Serial.print(timeToBlack/1000);
     Serial.println(" s");
-    timeblccpt = true;
+    timeblc = true;
   }
   // Robot is back at start after finishing one lap around the maze 
-  if (redcpt == 2 && timeredcpt == false){
+  if (redcpt == 2 && timered == false){
     lapTime = millis() - startMillis;
     Serial.print("Lap time: ");
     Serial.print(lapTime/1000);  
     Serial.println(" s");
-    timeredcpt = true;
+    timered = true;
     testLap = false;
     redcpt = 1; // Reset these values since this was only a test lap and not part of the main goal of the robot.
     blackcpt = 0;
