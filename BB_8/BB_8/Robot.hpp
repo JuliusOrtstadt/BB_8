@@ -45,7 +45,7 @@ class Robot{
      * This method should be called as often as possible. */
     void followWallLeft();
 
-    /* This method makes the robot follow the left wall using the proximity sensors. 
+    /* This method makes the robot follow the right wall using the proximity sensors. 
      * This method should be called as often as possible. */
     void followWallRight();
 
