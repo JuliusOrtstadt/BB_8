@@ -3,7 +3,7 @@
 #### <p align="center">Hendrikse Jeremy & Ortstadt Julius - Robo3</p>
 
 ## Note to the user
-
+If the simulation is not running correctly, meaning the robot is really fast and can't follow walls correctly, the user should change the value of the "speed" variable to a lower value. Note that this value cannot be less than |||||||||, otherwise the "turnSpeed" value will be negative and the code won't work as intended. 
 
 ## Strategy
 The robots goal is to find the black tile in the maze. 
@@ -88,3 +88,4 @@ We have two enum, one "color" which has four values (RED, WHITE, BLACK and UNDEF
 The other enum is "GroundType" which has five values (BLACKTILE, WHITETILE, REDTILE, LINE and UNDEFINED), these are the different ground types found on the labyrinth.
 
 ## Conclusion
+To conclude this documentation and therefore this project, we would like to add that it was a valuable experience in learning how to code such a project and think of different strategies that we could use so that the final goal could be achieved. Under normal circumstances, the robot achieves its goal. If the black tile is situated next to a perimeter wall, the process is fairly rapid. However, if the black tile is not along the perimeter, the task could take more time (c.f Video demonstration in "Ressources/Demonstration").
