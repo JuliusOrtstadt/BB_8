@@ -63,8 +63,6 @@ int turncpt = 0;
 unsigned long timeToBlack; // To get to the black tile.
 unsigned long lapTime;     // To complete one lap around the maze.
 unsigned long startMillis;
-bool timeblccpt = false; // If the robot has measured the time needed to get to the black tile.
-bool timeredcpt = false; // If the robot has measured the time needed to go from the red tile to the red tile after completing one lap around the maze.
 bool timeblc = false; // If the robot has measured the time needed to get to the black tile.
 bool timered = false; // If the robot has measured the time needed to go from the red tile to the red tile after completing one lap around the maze.
 bool testLap = true; // If the robot is measuring the maze.
