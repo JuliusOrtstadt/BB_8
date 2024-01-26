@@ -7,7 +7,8 @@
 ******************************************
 */
 
-#include "BB_8.hpp";
+#include "Functions.hpp"
+#include "Robot.hpp"
 
 // Pins for the different components on the robot
 #define LIGHT_SENSOR_PIN A0
@@ -127,15 +128,10 @@ void Robot::test(){
   BB_8.lightSensor();
   delay(50);
 }
-bool a = false;
 
 void Robot::findBlackTile(){
   // The robot does a test lap.
   if (testLap) {
-    // if (!a) {
-    //   Serial.print("lap test");
-    //   a = true;
-    // }
     BB_8.mapTime();
   }
   else if (!testLap) {
