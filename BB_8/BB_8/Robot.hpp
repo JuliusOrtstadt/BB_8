@@ -65,9 +65,15 @@ class Robot{
     //constructor
     Robot();
 
+<<<<<<< HEAD
     /* findBlackTile is the main function off this exercice
      * because if full fills the main objective wich is
      * to find te black case and go back to the start point*/
+=======
+    //findBlackTile is the main function off this exercice
+    //because if full fills the main objective wich is
+    //to find te black case and go back to the start point
+>>>>>>> 479385b2d7a83df670c34e31aa88305b77ab5b24
     void findBlackTile();
 
     /* test is a method woch content changes a lot,
