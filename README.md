@@ -1,6 +1,6 @@
-# <p style="text-align: center;">Documentation</p>
-## <p style="text-align: center;">BB-8 - The maze solving robot</p>
-#### <p style="text-align: center;">Hendrikse Jeremy & Ortstadt Julius - Robo3</p>
+# <p align="center">Documentation</p>
+## <p align="center">BB-8 - The maze solving robot</p>
+#### <p align="center">Hendrikse Jeremy & Ortstadt Julius - Robo3</p>
 
 ## Introduction
 
