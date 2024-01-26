@@ -12,8 +12,7 @@
 
 #include "Functions.hpp"
 
-/*
- * This class symobolize the robot, it has methods for basic movements
+/* This class symobolize the robot, it has methods for basic movements
  * but also ones to execute more complex tasks like the one asked in this exercice.
  */
 class Robot{
@@ -38,7 +37,7 @@ class Robot{
     //------------More developped methods using the basic ones------------
 
     /* This method detects on wich tile the robot is.
-     * There are white, red and balck tiles, when two last one it actualise a counter.
+     * There are white, red and black tiles, when two last one it actualise a counter.
      * This method should be called as often as possible. */
     void tileDetection();
 
@@ -54,7 +53,7 @@ class Robot{
      * This method should be called as often as possible.*/
     void backToStart();
 
-    /* This method makes the robot try to find the red tile. It works by randomly searching for it.
+    /* This method makes the robot try to find the black tile. It works by randomly searching for it.
      * This method should be called as often as possible. */
     void exploreMazeRandom();
 
@@ -66,14 +65,14 @@ class Robot{
     //constructor
     Robot();
 
-    //findBlackTile is the main function off this exercice
-    //because if full fills the main objective wich is
-    //to find te balck case and go back to the start point
+    /* findBlackTile is the main function off this exercice
+     * because if full fills the main objective wich is
+     * to find te black case and go back to the start point*/
     void findBlackTile();
 
-    //test is a method woch content changes a lot,
-    //its only purpose is to test parts of the code witout commenting the main code (findBlackTile)
-    //the content is defined in the file "BB_8.ino"
+    /* test is a method woch content changes a lot,
+     * its only purpose is to test parts of the code witout commenting the main code (findBlackTile)
+     * the content is defined in the file "BB_8.ino" */
     void test();
 };
 
