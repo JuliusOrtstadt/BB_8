@@ -7,8 +7,7 @@
 ******************************************
 */
 
-#include "Robot.hpp";
-#include "Functions.hpp";
+#include "BB_8.hpp";
 
 // Pins for the different components on the robot
 #define LIGHT_SENSOR_PIN A0
@@ -211,9 +210,9 @@ void Robot::backToStart(){ // Function which allows the robot to get back to sta
   }
 }
 
+
 void Robot::exploreMazeRandom(){ // Function used to explore the maze randomly
-  BB_8.detection();
-  
+  BB_8.detection();  
   if ((sensorFL < thresholdFront) || (sensorFR < thresholdFront)){
     // Something is detected somewhere in the path the robot.
     // We choose a "random" direction for the robot to follow.
