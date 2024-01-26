@@ -2,7 +2,8 @@
 ## <p align="center">BB-8 - The maze solving robot</p>
 #### <p align="center">Hendrikse Jeremy & Ortstadt Julius - Robo3</p>
 
-## Introduction
+## Note to the user
+
 
 ## Strategy
 The robots goal is to find the black tile in the maze. 
@@ -36,7 +37,7 @@ In the "loop" function of arduino whe have "findBlackTile" that fulfills the rob
 - The "findBlackTile" method. 
 This method basically combines all the logic the robot is going to do. 
 Meaning, it states the different tasks the robot is doing and calls the corresponding functions needed during this specific task. The flowchart for this method is below.\
-![Flowchart of findBlackTile](Pictures\findBlackTile_Flowchart.png)
+![Flowchart of findBlackTile](/Ressources/Flowcharts/findBlackTile_Flowchart.png)
 
 
 - The "test" method.
@@ -48,12 +49,12 @@ We had to do this since HoRoSim doesn't support the Random library for Arduino.
 The robot will choose a "random" turn if something is in its path. Otherwise, he either goes forward, right or left, depending on the possibily (if there is a wall to the side or nothing etc...).
 The robot does this until he finds the black tile.
 Below, the flowchart for this method.\
-![Flowchat of exploreMazeRandom](Pictures\exploreMazeRandom_Flowchart.png)
+![Flowchat of exploreMazeRandom](/Ressources/Flowcharts/exploreMazeRandom_Flowchart.png)
 
 - The "backToStart" method. We created this method to treat the task of the robot getting back to the starting point after random exploration (he is lost inside the maze around walls not connected to the perimeter wall). With a timer, we measure how long the robot has been following a specific wall and if it led him back to start. We use an enum type to switch between the states and therefore let the robot either follow the left wall or search for a new one. 
 We added some tolerance to the timer to really make sure that he can complete a theoretic lap around the maze. Each lap of the robot will never be exactly the same so we need to take this into consideration.
 Below the flowchart for this method.\
-![Flowchart of backToStart](Pictures\backToStart_Flowchart.png)
+![Flowchart of backToStart](/Ressources/Flowcharts/backToStart_Flowchart.png)
 
 - The "followWallLeft" & "followWallRight" functions. 
 These are pretty self explaining. They allow the robot to follow the left and right wall respectively. 
@@ -62,7 +63,7 @@ If nothing is detected in the path of the robot we go forward.
 If something is in front of it, go right as we want to follow the left wall. 
 If we loose sight of the left wall we turn left to find it again. 
 This process is the same for the right wall except that we change the turn direction and use the sensors on the other side. Below the flowchart for "followWallLeft".\
-![Flowchart of followWallLeft](Pictures\followWallLeft_Flowchart.png)
+![Flowchart of followWallLeft](/Ressources/Flowcharts/followWallLeft_Flowchart.png)
 
 - The "mapTime" method. 
 As the name suggests, this method will perform a test lap which will allow us to measure the time needed for 2 things during the simulation: the time needed to go from start to start by following the left wall and, if found along the perimeter wall, the time needed to get to the black tile. 
