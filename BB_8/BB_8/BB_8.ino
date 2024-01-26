@@ -8,7 +8,7 @@
 */
 
 #include "Robot.hpp";
-#include "Functions .hpp";
+#include "Functions.hpp";
 
 // Pins for the different components on the robot.
 #define LIGHT_SENSOR_PIN A0
