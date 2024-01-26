@@ -3,7 +3,7 @@
 #### <p align="center">Hendrikse Jeremy & Ortstadt Julius - Robo3</p>
 
 ## Note to the user
-If the simulation is not running correctly, meaning the robot is really fast and can't follow walls correctly, the user should change the value of the "speed" variable to a lower value. Note that this value cannot be less than |||||||||, otherwise the "turnSpeed" value will be negative and the code won't work as intended. 
+If the simulation is not running correctly, meaning the robot is really fast and can't follow walls correctly, the user should change the value of the "speed" variable (File: BB8.ino / Line 48) to a lower value. Note that this value cannot be less than 100 otherwise the "turnSpeed" value will be negative and the code won't work as intended. 
 
 ## Strategy
 The robots goal is to find the black tile in the maze. 
