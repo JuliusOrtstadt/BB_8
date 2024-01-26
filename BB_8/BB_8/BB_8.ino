@@ -45,7 +45,7 @@ const int thresholdDiagonal = 600;
 const int thresholdSide = 400;
 
 // Variables for the speed of the robot.
-const int speed = 255;
+const int speed = 225;
 const int turnSpeed = speed - 100;
 
 // Variables for tile BB_8.detection.
@@ -174,7 +174,7 @@ void Robot::findBlackTile(){
     else { 
       BB_8.tileDetection();
       BB_8.backToStart();
-      Serial.println("back to star");
+      //Serial.println("Back to start");
     }
   }
 }
