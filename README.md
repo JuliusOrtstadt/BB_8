@@ -22,17 +22,17 @@ Now after this amount of time, the robot will go forward until he finds a new wa
 So, in basic terms, this is the strategie our robot follows to find the black tile and get back to where he started.
 
 This is the only simple solutions or maybe the only solution, I will explain why. 
-So first why not try to make a matrix from the labyrinth to navigate in it, well because we dont have enough sensor (encoder could be great or distance sensor with a big range).
-Also because following the computer the simulation doens't run on the same speed and the millis method from arduino is based on real time and not the simulation time. 
-This last problem was also really anoying to detect the red and balck tiles because the timer is based on a timer to make the difference between the black lines and the black tile.
-Also we cannot detect in a realiable manner the lines on the ground because often the light sensor detects red when it is between the balck line and the white tile.
-Last problem, we cannot have acces to all sensors on the robot whith analog entries because there are only 6 on the Arduino and wa have 8 sensors so we to make a choice.
+So first, why not try to make a matrix from the labyrinth to navigate in it, well because we don't have enough sensor (a motor encoder could be great or distance sensor with a big range).
+Also because, depending on the computer, the simulation doens't run on the same speed and the millis method from arduino is based on real time and not the simulation time. 
+This led to another problem, which was detecting the red and black tiles, this also really quite difficult to solve because the timer is based on a timer to make the difference between the black lines and the black tile.
+Also we cannot detect in a realiable manner the lines on the ground because often the light sensor detects red when it is between the black line and the white tile.
+Last problem, we cannot have acces to all sensors on the robot whith analog entries because there are only 6 on the Arduino and wa have 8 sensors so we had make a choice.
 
 
 ## The code
 Let's go over some of our code: 
-We have one class Robot that represents our robot and it has multiple methods representing it's capabilities.
-In the "loop" function of arduino whe have "findBlackTile" that fulfills the robots mission OR whe have the "test" method that allows us to tst parts of the code with ease.
+We have one class Robot that represents our robot and it has multiple methods representing its capabilities.
+In the "loop" function of arduino we have "findBlackTile" that fulfills the robots mission OR we have the "test" method that allows us to test parts of the code with ease.
 
 - The "findBlackTile" method. 
 This method basically combines all the logic the robot is going to do. 
@@ -41,7 +41,7 @@ Meaning, it states the different tasks the robot is doing and calls the correspo
 
 
 - The "test" method.
-this method is there to test different parts of the code with more ease.
+This method is there to test different parts of the code with more ease.
 
 - The "exploreMazeRandom" method. As can be guessed by the name, this method will make the robot explore the maze on a random basis. 
 If the black tile is not found along the perimeter wall, meaning it is somewhere inside the maze, we need to explore the maze to find it. However, we weren't able to figure out a strategy to do it, so we went with a random approach. We generated a random list of size 100 with 0 and 1. This list indicates how the robot will turn (1 for left and 0 for right if possible). 
@@ -74,17 +74,17 @@ We print the result in the HoRoSim window and reset the values after the test la
 - The drive functions ("forward" / "turnLeft" / "turnRight" / "completeStop") do exactly what they suggest. They control the robot at speed given as an argument when we call the method.
 
 - The "tileDetection" method.
-This method detects on wich tile the robot is. There are white, red and balck tiles, when on the two last one it actualise a counter.
+This method detects on wich tile the robot is. There are white, red and black tiles, when on the two last ones, it updates the corresponding counters.
 This method should be called as often as possible.
 
 - The "lightSensor" method.
-This method reads the value and returns a color from the enum color.
+This method reads the value of the light sensor and returns a color from the enum color.
 
-A note for all the times that we use the values from the proximity sensors. Since the values are all analog, we defined a threshold values for the side, the front and the diagonal in order to make the line following as efficient as possible.
+A note for all the times that we use the values from the proximity sensors. Since the values are all analog, we defined threshold values for the side, the front and the diagonal in order to make the line following as efficient as possible.
 
 
 For the rest of the code we have one function "printColor" that prints a color from the enum color because the print function from arduino can't do it.
-We have two enum, one "color" that has tree values (RED, WHITE, BLACK and UNDEFIND) these are the colors found on the labyrinth.
-The other enum is "GroundType" that has five values (BLACKTILE, WHITETILE, REDTILE, LINE and UNDEFINED) these are the diffrent ground types found on the labyrinth.
+We have two enum, one "color" which has four values (RED, WHITE, BLACK and UNDEFIND), these are the colors found on the labyrinth.
+The other enum is "GroundType" which has five values (BLACKTILE, WHITETILE, REDTILE, LINE and UNDEFINED), these are the different ground types found on the labyrinth.
 
 ## Conclusion
