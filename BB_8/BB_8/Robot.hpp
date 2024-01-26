@@ -46,7 +46,7 @@ class Robot{
      * This method should be called as often as possible. */
     void followWallLeft();
 
-    /* This method makes the robot follow the left wall using the proximity sensors. 
+    /* This method makes the robot follow the right wall using the proximity sensors. 
      * This method should be called as often as possible. */
     void followWallRight();
 
@@ -54,7 +54,7 @@ class Robot{
      * This method should be called as often as possible.*/
     void backToStart();
 
-    /* This method makes the robot try to find the red tile. It works by randomly searching for it.
+    /* This method makes the robot try to find the black tile. It works by randomly searching for it.
      * This method should be called as often as possible. */
     void exploreMazeRandom();
 
@@ -68,7 +68,7 @@ class Robot{
 
     //findBlackTile is the main function off this exercice
     //because if full fills the main objective wich is
-    //to find te balck case and go back to the start point
+    //to find te black case and go back to the start point
     void findBlackTile();
 
     //test is a method woch content changes a lot,
