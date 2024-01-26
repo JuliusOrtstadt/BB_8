@@ -48,7 +48,7 @@ class Robot{
     //test is a method woch content changes a lot,
     //its only purpose is to test parts of the code witout commenting the main code (findBlackCase)
     //the content is defined in the file "BB_8.ino"
-    void test():
+    void test();
 };
 
 #endif ROBOT_HPP;
