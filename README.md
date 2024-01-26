@@ -3,7 +3,13 @@
 #### <p align="center">Hendrikse Jeremy & Ortstadt Julius - Robo3</p>
 
 ## Note to the user
-If the simulation is not running correctly, meaning the robot is really fast and can't follow walls correctly, the user should change the value of the "speed" variable (File: BB_8.ino / Line 48) to a lower value. Note that this value cannot be less than 100 otherwise the "turnSpeed" value will be negative and the code won't work as intended. 
+If the simulation is not running correctly, meaning the robot is really fast and can't follow walls correctly, the user should change the value of the "speed" variable (File: BB_8.ino / Line 48) to a lower value. 
+Note that this value cannot be less than 100 otherwise the "turnSpeed" value will be negative and the code won't work as intended. 
+
+It can also happen that if the robot is really fast at the beginning of the simulation and becomes slower at a certain point, although no variable is changed in the code, that the timing will not work properly and the robot may not be able to find its way back to start as intended.
+
+Finally, if the robots movements are to rapid and/or sharp, it can lead to the robot either tipping over or leaning a small amount of time. If this happens, it can be that the light sensor detects black and thinks it found the black tile, which was not the case.
+If this happens, the robots speed may need to be slowed a bit.
 
 ## Strategy
 The robots goal is to find the black tile in the maze. 
