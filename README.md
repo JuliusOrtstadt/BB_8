@@ -25,6 +25,7 @@ When he finds the black tile, the robot needs to find its way back.
 For that, the robot will follow a wall to its left for the same amount of time it took him to do one lap around the maze (plus tolerance). 
 We chose this amount of time to be sure that he doesn't "exit" the wall earlier in case it is the perimeter wall and it would have led him back to start.
 Now after this amount of time, the robot will go forward until he finds a new wall and start the whole process all over again until he is back at start. 
+When he arrived back at start either after random exploration or by following the wall, as soon as he detects the red tile the robot stops.
 
 So, in basic terms, this is the strategie our robot follows to find the black tile and get back to where he started.
 
