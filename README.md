@@ -4,7 +4,7 @@
 
 ## Setup
 This project was made using Arduino IDE for coding, CoppeliaSim Edu for the simulation and HoRoSim for the link between the IDE and the simulation software.
-To install HoRoSim download the installer from the software section of this repo.
+To install HoRoSim, download the installer from this [dropbox](https://www.dropbox.com/s/i1m1ydk95hfnojd/HoRoSim_Installer.exe?dl=0).
 As the installation folder, select the Arduino sketch folder.
 You then need to add the compiler to the PATH variable.
 To test if everything is working, open the Arduino IDE, create a new sketch and in the Boards and Ports menu select: "ArduinoUno_HoRoSim". 
