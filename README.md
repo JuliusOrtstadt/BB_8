@@ -2,6 +2,15 @@
 ## <p align="center">BB-8 - The maze solving robot</p>
 #### <p align="center">Hendrikse Jeremy & Ortstadt Julius - Robo3</p>
 
+## Setup
+This project was made using Arduino IDE for coding, CoppeliaSim Edu for the simulation and HoRoSim for the link between the IDE and the simulation software.
+To install HoRoSim download the installer from the software section of this repo.
+As the installation folder, select the Arduino sketch folder.
+You then need to add the compiler to the PATH variable.
+To test if everything is working, open the Arduino IDE, create a new sketch and in the Boards and Ports menu select: "ArduinoUno_HoRoSim". 
+Now open CoppeliaSim, load one of the labyrinths, upload the code in the IDE and now everything should work.
+If you want to upload another code make sure that you close the HoRoSim window before.
+
 ## Note to the user
 If the robot is really fast and can't follow walls correctly, the user should change the value of the "speed" variable (File: BB_8.ino / Line 48) to a lower value. 
 Note that this value cannot be less than 100 otherwise the "turnSpeed" value will be negative and the code won't work as intended. 
